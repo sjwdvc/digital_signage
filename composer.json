@@ -1,0 +1,12 @@
+{
+  "autoload": {
+    "psr-4": {
+      "MyApp\\": "app"
+    }
+  },
+  "require": {
+    "cboden/ratchet": "^0.4",
+    "stevenmaguire/oauth2-microsoft": "^2.2",
+    "ext-json": "*"
+  }
+}
