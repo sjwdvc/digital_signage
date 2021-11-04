@@ -6,7 +6,7 @@ if(!empty($_SESSION['user']) || $_SESSION['user'] != null)
     $response = validate($_POST, []);
     if($response['success']){
         try{
-            //TODO: UPLOAD FILE
+            //TODO: CHECK FILETYPE & UPLOAD FILE 
             //TODO: Send to database
 //            throw new Exception('This is a test');
         }
