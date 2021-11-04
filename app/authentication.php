@@ -4,11 +4,6 @@ require_once('../env_loader.php');
 
 session_start();
 
-$client = new GuzzleHttp\Client();
-
-$options = [
-    'scope' => ['User.Read'] // array or string
-];
 $provider = new Stevenmaguire\OAuth2\Client\Provider\Microsoft([
     //'ObjectId'                  => env('objectId'),
     'clientId'                  => env('clientId'),
@@ -22,6 +17,9 @@ $provider = new Stevenmaguire\OAuth2\Client\Provider\Microsoft([
 
 if (!isset($_GET['code'])) {
     // If we don't have an authorization code then get one
+    $options = [
+        'scope' => ['User.Read'] // array or string
+    ];
     $authUrl = $provider->getAuthorizationUrl($options);
     $_SESSION['oauth2state'] = $provider->getState();
     header('Location: '.$authUrl);
@@ -42,24 +40,26 @@ else {
     try {
         // We got an access token, let's now get the user's details
         //$user = $provider->getResourceOwner($token);
-
         $headers = [
             "Authorization" => "Bearer ". $token->getToken(),
             'Content-Type' => 'application/json'
         ];
+        $client = new GuzzleHttp\Client();
 
         $response = $client->request('GET', env('urlResourceOwnerDetails'), ['headers' => $headers], ['debug' => true]);
 
         $data = json_decode($response->getBody()->getContents());
 
         printf('Logged in with %s!', $data->mail);
-        //TODO: Store in session
+        $_SESSION['user'] = $data->mail;
+        $_SESSION['name'] = $data->displayName;
+        echo $token->getToken();
+//        header('Location: ../index.php');
     }
     catch (Exception $e) {
         // Failed to get user details
-        exit('Oh dear...' . $e->getMessage());
+        exit('Oh dear... contact the developer and include this message: ' . $e->getMessage());
     }
-
     // Use this to interact with an API on the users behalf
     //echo $token->getToken();
 }
