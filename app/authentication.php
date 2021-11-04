@@ -53,6 +53,7 @@ else {
         printf('Logged in with %s!', $data->mail);
         $_SESSION['user'] = $data->mail;
         $_SESSION['name'] = $data->displayName;
+        $_SESSION['login'] = true;
 //        echo $token->getToken();
         header('Location: ../index.php');
     }
