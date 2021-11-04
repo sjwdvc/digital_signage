@@ -53,8 +53,8 @@ else {
         printf('Logged in with %s!', $data->mail);
         $_SESSION['user'] = $data->mail;
         $_SESSION['name'] = $data->displayName;
-        echo $token->getToken();
-//        header('Location: ../index.php');
+//        echo $token->getToken();
+        header('Location: ../index.php');
     }
     catch (Exception $e) {
         // Failed to get user details

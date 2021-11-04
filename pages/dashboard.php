@@ -12,7 +12,7 @@ require_once('../env_loader.php');
     <title>Highlights</title>
 </head>
 <body>
-    <section class="bg-gray-200 text-gray-600 body-font flex flex-col h-screen box-border">
+    <section class="text-gray-600 body-font flex flex-col h-screen box-border">
         <div class="max-w-7xl pt-2 mx-auto text-center">
             <h1 class="text-3xl Avenir font-semibold text-gray-900">Name here</h1>
             <h2 class="mb-8 text-1xl Avenir font-semibold text-gray-600 text-center">Description here</h2>
