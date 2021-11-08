@@ -8,12 +8,14 @@ function connect(){
     return new PDO(env('DB_TYPE') . ':host=' . env('DB_HOST') . ';dbname=' . env('DB_NAME') . ';charset=' . env('DB_CHARSET'), env('DB_USERNAME'), env('DB_PASSWORD'), $options);
 }
 
-function saveUploadToDatabase($url){
+function saveUploadToDatabase($url, $user, $description, $name){
     $conn = connect();
-    $sql = "INSERT INTO `uploads` (`user`,`filename`) values(:email, :url)";
+    $sql = "INSERT INTO `uploads` (`user`,`filename`, `name`, `description`) values(:email, :url, :name, :description)";
     $query = $conn->prepare($sql);
-    $query->bindParam('email', $_SESSION['user']);
+    $query->bindParam('email', $user);
     $query->bindParam('url', $url);
+    $query->bindParam('name', $name);
+    $query->bindParam('description', $description);
     $query->execute();
     $conn = null;
 }

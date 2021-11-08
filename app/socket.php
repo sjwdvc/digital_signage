@@ -37,4 +37,15 @@ class Socket implements MessageComponentInterface {
 
     public function onError(ConnectionInterface $conn, \Exception $e) {
     }
+
+    public function sendToClients($user, $description, $url){
+        $message = [
+            'user' => $user,
+            'description' => $description,
+            'url' => $url
+        ];
+        foreach ( $this->clients as $client ) {
+            $client->send(json_encode($message));
+        }
+    }
 }
