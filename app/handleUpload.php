@@ -8,7 +8,7 @@ if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
     $response = validate($_POST, []);
     if ($response['success']) {
         try {
-            $target_dir = "../uploads/";
+            $target_dir = "../" . env('uploadFolder');
             $imageFileType = strtolower(pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION));
             $newFileName = strtotime("now").str_replace(' ', '', $_SESSION['name']). '.' .$imageFileType;
             $target_file = $target_dir . $newFileName;
@@ -22,6 +22,7 @@ if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
                 if ($_FILES["file"]["size"] <= 500000) {
                     // if everything is ok, try to upload file
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+                        saveUploadToDatabase($newFileName);
                         $response = [
                             'success' => true,
                             'loginError' => false,
@@ -29,8 +30,6 @@ if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
                             'data' => [],
                             'message' => "Your submission was a success! Keep an eye on the screen!"
                         ];
-                        saveUploadToDatabase($newFileName);
-
                     } else {
                         $response = [
                             'success' => false,
