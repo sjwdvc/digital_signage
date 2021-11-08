@@ -9,6 +9,7 @@
     "stevenmaguire/oauth2-microsoft": "^2.2",
     "ext-json": "*",
     "ext-fileinfo": "*",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "textalk/websocket": "1.0.*"
   }
 }

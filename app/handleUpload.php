@@ -1,8 +1,10 @@
 <?php
-require_once('../vendor/autoload.php');
-require_once('connection.php');
+require_once(__DIR__.'/../env_loader.php');
+require_once(__DIR__.'/../vendor/autoload.php');
 
+use MyApp\DBConnection;
 session_start();
+$dbConnection = new DBConnection();
 
 if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
     $response = validate($_POST, []);
@@ -13,7 +15,6 @@ if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
             $newFileName = strtotime("now").str_replace(' ', '', $_SESSION['name']). '.' .$imageFileType;
             $target_file = $target_dir . $newFileName;
 
-            // Check if image file is a actual image or fake image
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $check = finfo_file($finfo, $_FILES["file"]["tmp_name"]);
 
@@ -22,13 +23,13 @@ if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
                 if ($_FILES["file"]["size"] <= 500000) {
                     // if everything is ok, try to upload file
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-                        saveUploadToDatabase($newFileName, $_SESSION['user'], $response['data']['description'], $_SESSION['name']);
+                        $dbConnection->saveUploadToDatabase($newFileName, $_SESSION['user'], $response['data']['description'], $_SESSION['name']);
                         $response = [
                             'success' => true,
                             'loginError' => false,
                             'errors' => [],
                             'data' => [],
-                            'message' => "Your submission was a success! Keep an eye on the screen!"
+                            'message' => "Your submission was successful! Keep an eye on the screen!"
                         ];
                     } else {
                         $response = [

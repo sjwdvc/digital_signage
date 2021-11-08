@@ -116,7 +116,7 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
                         text: data.errors.login,
                     })
                 }
-                else if(!data.success && !data.loginError){
+                else if(!data.success && !data.loginError && data.errors.length === 0){
                     Swal.fire({
                         icon: 'error',
                         title: 'There seems to be something wrong... :(',
