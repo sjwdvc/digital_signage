@@ -40,12 +40,9 @@ require_once('../env_loader.php');
         console.log(e.data);
     }
 
-    // function transmitMessage() {
-    //     var description = document.getElementById('description');
-    //
-    //     console.log(description.value);
-    //     socket.send(description.value);
-    // }
+    function transmitMessage(message) {
+        socket.send(message);
+    }
 </script>
 
 </body>

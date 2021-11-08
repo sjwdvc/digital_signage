@@ -3,7 +3,7 @@
 namespace MyApp;
 
 require_once(__DIR__.'/../env_loader.php');
-require_once(__DIR__.'/../vendor/autoload.php');
+//require_once(__DIR__.'/../vendor/autoload.php');
 
 use PDO;
 
@@ -12,10 +12,10 @@ class DBConnection{
     function connect(){
         $options = array(PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING);
         return new PDO(env('DB_TYPE') . ':host=' . env('DB_HOST') . ';dbname=' . env('DB_NAME') . ';charset=' . env('DB_CHARSET'), env('DB_USERNAME'), env('DB_PASSWORD'), $options);
+//        return new PDO('mysql:host=localhost;dbname=digital_signage;charset=utf8', 'root', 'mysql', $options);
     }
 
     function saveUploadToDatabase($url, $user, $description, $name){
-        session_start();
         $now = date("Y-m-d H:i:s");
         $conn = $this->connect();
         $sql = "INSERT INTO `uploads` (`user`,`filename`, `name`, `description`, `created_at`) values(:email, :url, :name, :description, :created_at)";

@@ -7,4 +7,4 @@ use WebSocket\Client;
 $client = new Client('ws://'.env('domain').':'.env('wsPort'));
 //TODO:send message and let the server get the next submission from the database and send to clients
 $client->send('updateScreen');
-$client->close();
+//$client->close();

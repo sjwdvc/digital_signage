@@ -1,8 +1,7 @@
 <?php
 namespace MyApp;
-require_once(__DIR__.'/../vendor/autoload.php');
+//require_once(__DIR__.'/../vendor/autoload.php');
 
-use MyApp\DBConnection;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
@@ -26,6 +25,7 @@ class Socket implements MessageComponentInterface {
             $dbConnection = new DBConnection();
             $toShow = null;
 
+            //TODO: fix the database calls when using them in websocket call
             if((int)$dbConnection->checkTotalSubmissions()['totalSubmissions'] > 0){
                 if($dbConnection->checkUnshown()['unshownSubmissions'] == 0){
                     $dbConnection->resetShown();
@@ -52,6 +52,18 @@ class Socket implements MessageComponentInterface {
                         'message' => 'Nothing to show'
                     ]));
                 }
+            }
+        }
+        else{
+            foreach ( $this->clients as $client ) {
+                if ( $from->resourceId == $client->resourceId ) {
+                    continue;
+                }
+                $client->send(json_encode([
+                    'success' => true,
+                    'data' => [],
+                    'message' => 'This is a message from the websocket'
+                ]));
             }
         }
     }
