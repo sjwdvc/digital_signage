@@ -34,7 +34,7 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
     ?>
     <script>
         Swal.fire({
-            icon: 'succes',
+            icon: 'success',
             title: "You are logged in!",
         })
     </script>
@@ -114,6 +114,13 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
                         icon: 'warning',
                         title: 'Sorry for the inconvenience',
                         text: data.errors.login,
+                    })
+                }
+                else if(!data.success && !data.loginError){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'There seems to be something wrong... :(',
+                        text: data.message,
                     })
                 }
                 else{
