@@ -21,51 +21,27 @@ class Socket implements MessageComponentInterface {
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
-        if($msg == 'updateScreen'){
-            $dbConnection = new DBConnection();
-            $toShow = null;
-
-            //TODO: fix the database calls when using them in websocket call
-            if((int)$dbConnection->checkTotalSubmissions()['totalSubmissions'] > 0){
-                if($dbConnection->checkUnshown()['unshownSubmissions'] == 0){
-                    $dbConnection->resetShown();
-                }
-                $toShow = $dbConnection->getNextUnshownSubmission();
-                $dbConnection->updateShown($toShow['id']);
-            }
-
+        $message = json_decode($msg);
+        if($message->action == 'updateScreen'){
             foreach ( $this->clients as $client ) {
                 if ( $from->resourceId == $client->resourceId ) {
                     continue;
                 }
-                if($toShow) {
-                    $client->send(json_encode([
-                        'success' => true,
-                        'data' => $toShow,
-                        'message' => ''
-                        ]));
-                }
-                else{
-                    $client->send(json_encode([
-                        'success' => false,
-                        'data' => [],
-                        'message' => 'Nothing to show'
-                    ]));
-                }
+                $client->send(json_encode($message));
             }
         }
-        else{
-            foreach ( $this->clients as $client ) {
-                if ( $from->resourceId == $client->resourceId ) {
-                    continue;
-                }
-                $client->send(json_encode([
-                    'success' => true,
-                    'data' => [],
-                    'message' => 'This is a message from the websocket'
-                ]));
-            }
-        }
+//        else{
+//            foreach ( $this->clients as $client ) {
+//                if ( $from->resourceId == $client->resourceId ) {
+//                    continue;
+//                }
+//                $client->send(json_encode([
+//                    'success' => true,
+//                    'data' => [],
+//                    'message' => 'This is a message from the websocket'
+//                ]));
+//            }
+//        }
     }
 
     public function onClose(ConnectionInterface $conn) {

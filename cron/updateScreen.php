@@ -2,9 +2,28 @@
 require_once(__DIR__.'/../vendor/autoload.php');
 require_once(__DIR__.'/../env_loader.php');
 
+use MyApp\DBConnection;
 use WebSocket\Client;
 
+$dbConnection = new DBConnection();
+$toShow = null;
+
+if((int)$dbConnection->checkTotalSubmissions()['totalSubmissions'] > 0){
+    if($dbConnection->checkUnshown()['unshownSubmissions'] == 0){
+        $dbConnection->resetShown();
+    }
+    $toShow = $dbConnection->getNextUnshownSubmission();
+    $dbConnection->updateShown($toShow['id']);
+}
 $client = new Client('ws://'.env('domain').':'.env('wsPort'));
-//TODO:send message and let the server get the next submission from the database and send to clients
-$client->send('updateScreen');
-//$client->close();
+
+if($toShow) {
+    $client->send(json_encode(['action' => 'updateScreen', 'foundNew'=> true, 'data' => $toShow]));
+}
+else{
+    $client->send(json_encode(['action' => 'updateScreen', 'foundNew'=> false, 'data' => []]));
+}
+$client->close();
+
+
+
