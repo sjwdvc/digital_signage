@@ -36,7 +36,6 @@ require_once('../env_loader.php');
 
     socket.onmessage = function (e) {
         let message = JSON.parse(e.data);
-        console.log(message);
         if(message.foundNew){
             submissionImage.src = '../uploads/' + message.data.filename;
             submissionDescription.innerText = message.data.description;
