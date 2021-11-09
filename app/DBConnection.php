@@ -71,4 +71,11 @@ class DBConnection{
         $query->execute();
         $conn = null;
     }
+    function emptyUploads(){
+        $conn = $this->connect();
+        $sql = "DELETE FROM `uploads`";
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $conn = null;
+    }
 }
