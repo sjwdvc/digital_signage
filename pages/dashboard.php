@@ -32,17 +32,29 @@ require_once('../env_loader.php');
     var uploadFolder = '<?= env('uploadFolder') ?>';
     var socket = new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
 
-    submissionImage.src = '../public/img/placeholder.jpg';
-    submissionName.innerHTML = `Upload your own submission through the url <span class="text-blue-500">${uploadUrl} </span>`;
-    submissionDescription.innerText = "Try it! It's free! :-)";
+    setPlaceholder();
 
     socket.onmessage = function (e) {
-        console.log(e.data);
+        let message = JSON.parse(e.data);
+        console.log(message);
+        if(message.foundNew){
+            submissionImage.src = '../uploads/' + message.data.filename;
+            submissionDescription.innerText = message.data.description;
+            submissionName.innerText = message.data.name;
+        }
+        else{
+            setPlaceholder();
+        }
+    }
+    function setPlaceholder(){
+        submissionImage.src = '../public/img/placeholder.jpg';
+        submissionName.innerHTML = `Upload your own submission through the url <span class="text-blue-500">${uploadUrl} </span>`;
+        submissionDescription.innerText = "Try it! It's free! :-)";
     }
 
-    function transmitMessage(message) {
-        socket.send(message);
-    }
+    // function transmitMessage(message) {
+    //     socket.send(message);
+    // }
 </script>
 
 </body>
