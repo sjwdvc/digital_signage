@@ -51,9 +51,9 @@ require_once('../env_loader.php');
         submissionDescription.innerText = "Try it! It's free! :-)";
     }
 
-    // function transmitMessage(message) {
-    //     socket.send(message);
-    // }
+    function transmitMessage(message) {
+        socket.send(message);
+    }
 </script>
 
 </body>
