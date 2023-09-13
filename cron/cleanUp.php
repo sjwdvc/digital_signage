@@ -13,4 +13,3 @@ foreach($files as $file){
         unlink($file);
     }
 }
-

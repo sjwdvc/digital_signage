@@ -24,6 +24,3 @@ else{
     $client->send(json_encode(['action' => 'updateScreen', 'foundNew'=> false, 'data' => []]));
 }
 $client->close();
-
-
-
