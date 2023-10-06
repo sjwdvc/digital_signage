@@ -12,7 +12,7 @@ require_once('../env_loader.php');
     <title>Highlights</title>
 </head>
 <body>
-    <section class="text-gray-600 body-font flex flex-col h-screen box-border">
+    <section class="text-gray-600 body-font flex flex-col h-screen box-border py-8">
         <div class="flex justify-center max-h-full flex-grow">
             <img id="submissionImage" class="max-h-full max-w-full object-contain mb-5" alt="Placeholder Image" src="../public/img/placeholder.jpg">
         </div>
