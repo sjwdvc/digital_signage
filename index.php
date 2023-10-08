@@ -22,9 +22,8 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
     ?>
     <section class="flex items-center h-screen justify-center flex-col">
         <h1 class="mb-5 text-6xl items-center Avenir xl:w-2/2 text-gray-900">First things first...</h1>
-<!--        <a href="app/authentication.php"-->
-        <a href="app/authenticationLocal.php"
-           class="inline-block p-4 bg-purple-600 text-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-purple-600 ease-linear transition-all duration-150">
+        <a href="<?= env('httpProtocol').env('domain').env('subFolder').env('appFolder')?>/app/authentication.php" class="inline-block p-4 bg-purple-600 text-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-purple-600 ease-linear transition-all duration-150">
+<!--        <a href="app/authenticationLocal.php" class="inline-block p-4 bg-purple-600 text-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-purple-600 ease-linear transition-all duration-150">-->
             Log in with your Da Vinci Account
         </a>
     </section>
@@ -87,6 +86,7 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
         document.getElementById('file').addEventListener('change', changeFileInfo, true)
         function upload(){
             var fetchUri = '<?php echo $fetchUrl ?>';
+            console.log(fetchUri);
             var data = new FormData();
             data.append('file', document.getElementById('file').files[0]);
             data.append('description', document.getElementById('description').value);

@@ -28,6 +28,10 @@ require_once('../env_loader.php');
     var submissionImage = document.getElementById('submissionImage');
 
     // Create a new WebSocket.
+    var httpProtocol = '<?php echo env("httpProtocol") ?>';
+    var domain = '<?php echo env("domain") ?>';
+    var subFolder = '<?php echo env("subFolder") ?>';
+    var appFolder = '<?php echo env("appFolder") ?>';
     var uploadUrl = '<?= env('uploadUrl') ?>';
     var uploadFolder = '<?= env('uploadFolder') ?>';
     var socket = new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
@@ -37,7 +41,7 @@ require_once('../env_loader.php');
     socket.onmessage = function (e) {
         let message = JSON.parse(e.data);
         if(message.foundNew){
-            submissionImage.src = '../uploads/' + message.data.filename;
+            submissionImage.src = httpProtocol + domain + subFolder + appFolder + uploadFolder + message.data.filename;
             submissionDescription.innerText = message.data.description;
             submissionName.innerText = message.data.name;
         }
@@ -46,7 +50,7 @@ require_once('../env_loader.php');
         }
     }
     function setPlaceholder(){
-        submissionImage.src = '../public/img/placeholder.jpg';
+        submissionImage.src = httpProtocol + domain + subFolder + '/public/img/placeholder.jpg';
         submissionName.innerHTML = `Upload your own submission through the url <span class="text-blue-500">${uploadUrl} </span>`;
         submissionDescription.innerText = "Try it! It's free! :-)";
     }

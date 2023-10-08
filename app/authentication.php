@@ -58,7 +58,7 @@ else {
     }
     catch (Exception $e) {
         // Failed to get user details
-        exit('Oh dear... contact the developer and include this message: ' . $e->getMessage());
+        exit('Oh dear... contact the developer and explain the issue (Name: Stefano Verhoeve, Phone: +31 6 38677206)');
     }
     // Use this to interact with an API on the users behalf
     //echo $token->getToken();

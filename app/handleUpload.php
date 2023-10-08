@@ -6,22 +6,21 @@ use MyApp\DBConnection;
 session_start();
 $dbConnection = new DBConnection();
 
-if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
+if (!empty($_SESSION['user'])) {
     $response = validate($_POST, []);
-    if ($response['success']) {
+    if($response['success']) {
         try {
-            $target_dir = "../" . env('uploadFolder');
+            $target_dir = env('httpProtocol') . env('domain') . env('subFolder'). env('appFolder').env('uploadFolder');
             $imageFileType = strtolower(pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION));
             $newFileName = strtotime("now").str_replace(' ', '', $_SESSION['name']). '.' .$imageFileType;
-            $target_file = $target_dir . $newFileName;
+            $target_file = '../uploads/'. $newFileName;
 
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $check = finfo_file($finfo, $_FILES["file"]["tmp_name"]);
-
             if (in_array($check, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'])) {
                 // Check file size
                 if ($_FILES["file"]["size"] <= 500000) {
-                    // if everything is ok, try to upload file
+//                    // if everything is ok, try to upload file
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
                         $dbConnection->saveUploadToDatabase($newFileName, $_SESSION['user'], $response['data']['description'], $_SESSION['name']);
                         $response = [
@@ -65,7 +64,7 @@ if (!empty($_SESSION['user']) || $_SESSION['user'] != null) {
                 'loginError' => false,
                 'errors' => [],
                 'data' => [],
-                'message' => "Couldn't process the request...;" . $e->getMessage()
+                'message' => "Couldn't process the request...;",
             ];
         }
     }

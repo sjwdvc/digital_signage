@@ -5,6 +5,7 @@ namespace MyApp;
 require_once(__DIR__.'/../env_loader.php');
 require_once(__DIR__.'/../vendor/autoload.php');
 
+use Exception;
 use \PDO;
 
 class DBConnection{
@@ -19,11 +20,11 @@ class DBConnection{
         $conn = $this->connect();
         $sql = "INSERT INTO `uploads` (`user`,`filename`, `name`, `description`, `created_at`) values(:email, :url, :name, :description, :created_at)";
         $query = $conn->prepare($sql);
-        $query->bindParam('email', $user);
-        $query->bindParam('url', $url);
-        $query->bindParam('name', $name);
-        $query->bindParam('description', $description);
-        $query->bindParam('created_at', $now);
+        $query->bindParam(':email', $user);
+        $query->bindParam(':url', $url);
+        $query->bindParam(':name', $name);
+        $query->bindParam(':description', $description);
+        $query->bindParam(':created_at', $now);
         $query->execute();
         $conn = null;
     }
@@ -60,7 +61,7 @@ class DBConnection{
         $conn = $this->connect();
         $sql = "UPDATE `uploads` SET `shown` = 1 WHERE id=:id";
         $query = $conn->prepare($sql);
-        $query->bindParam('id', $id);
+        $query->bindParam(':id', $id);
         $query->execute();
         $conn = null;
     }
