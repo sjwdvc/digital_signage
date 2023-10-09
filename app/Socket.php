@@ -7,6 +7,7 @@ use Ratchet\ConnectionInterface;
 
 class Socket implements MessageComponentInterface {
 
+    private $clients;
     public function __construct()
     {
         $this->clients = new \SplObjectStorage;

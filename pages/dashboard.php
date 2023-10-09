@@ -41,7 +41,7 @@ require_once('../env_loader.php');
     socket.onmessage = function (e) {
         let message = JSON.parse(e.data);
         if(message.foundNew){
-            submissionImage.src = httpProtocol + domain + subFolder + appFolder + uploadFolder + message.data.filename;
+            submissionImage.src = httpProtocol + domain + subFolder + appFolder + uploadFolder + '/' + message.data.filename;
             submissionDescription.innerText = message.data.description;
             submissionName.innerText = message.data.name;
         }
