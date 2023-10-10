@@ -74,8 +74,27 @@ class DBConnection{
     }
     function emptyUploads(){
         $conn = $this->connect();
-        $sql = "DELETE FROM `uploads`";
+        $sql = "DELETE FROM `uploads`; ALTER TABLE `uploads` AUTO_INCREMENT = 1;";
         $query = $conn->prepare($sql);
+        $query->execute();
+        $conn = null;
+    }
+
+    function getLatestPoke(){
+        $conn = $this->connect();
+        $sql = "SELECT * FROM `pokes` LIMIT 1";
+        $query = $conn->prepare($sql);
+        $query->execute();
+        $conn = null;
+        return $query->fetch();
+    }
+
+    function updateLatestPoke(){
+        $now = date("Y-m-d H:i:s");
+        $conn = $this->connect();
+        $sql = "DELETE FROM `pokes`; ALTER TABLE `pokes` AUTO_INCREMENT = 1; INSERT INTO `pokes` (`created_at`) values(:created_at)";
+        $query = $conn->prepare($sql);
+        $query->bindParam(':created_at', $now);
         $query->execute();
         $conn = null;
     }

@@ -18,6 +18,10 @@ $fetchUrl = env('fetchUri');
 </head>
 <body>
 <?php
+$_SESSION['user'] = 'sverhoeve@davinci.nl;';
+$_SESSION['name'] = 'Stefano';
+$_SESSION['login'] = true;
+
 if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
     ?>
     <section class="flex items-center h-screen justify-center flex-col">
@@ -84,7 +88,11 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
 
     <script>
         document.getElementById('file').addEventListener('change', changeFileInfo, true)
+
+        // This function takes the values from the form, sends them to the server, and displays possible messages from the server
         function upload(){
+            // This variable is defined at the top of the page
+            // This variable is the url for the Post request
             var fetchUri = '<?php echo $fetchUrl ?>';
             console.log(fetchUri);
             var data = new FormData();
@@ -111,29 +119,16 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
                     emptyFileInfo();
                 }
                 else if(!data.success && data.loginError){
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Sorry for the inconvenience',
-                        text: data.errors.login,
-                    })
+                    swalAlert('warning', 'Sorry for the inconvenience', data.errors.login);
                 }
                 else if(!data.success && !data.loginError && data.errors.length === 0){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'There seems to be something wrong... :(',
-                        text: data.message,
-                    })
+                    swalAlert('error', 'There seems to be something wrong... :(', data.message);
                 }
                 else{
-                    Swal.fire({
-                        icon: 'Info',
-                        title: 'Forgot something?',
-                        text: data.errors.errorFile,
-                    })
+                    swalAlert('Info', 'Forgot something?', data.errors.errorFile);
                     for(property in data.errors){
                         document.getElementById(property).innerText = data.errors[property];
                     }
-
                 }
             }).catch(function (error) {
                 Swal.fire({
@@ -143,6 +138,14 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
                     footer: 'Contact the developer.'
                 })
             });
+        }
+
+        function swalAlert(icon, title, text){
+            Swal.fire({
+                icon: icon,
+                title: title,
+                text: text,
+            })
         }
 
         function clearValues(toClear){

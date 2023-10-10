@@ -1,5 +1,7 @@
 <?php
 require_once('../env_loader.php');
+$pokeUri = env('pokeUri');
+$timeout = env('timeout');
 ?>
 <!doctype html>
 <html lang="en">
@@ -36,6 +38,8 @@ require_once('../env_loader.php');
     var uploadFolder = '<?= env('uploadFolder') ?>';
     var socket = new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
 
+    var timeout = <?php echo $timeout ?>;
+
     setPlaceholder();
 
     socket.onmessage = function (e) {
@@ -58,6 +62,19 @@ require_once('../env_loader.php');
     function transmitMessage(message) {
         socket.send(message);
     }
+
+    function pokeServer(){
+        var pokeUri = '<?php echo $pokeUri ?>';
+        var data = new FormData();
+        data.append('poke', 'poke');
+
+        fetch(pokeUri, {
+            method: 'post',
+            body: data
+        });
+    }
+
+    setInterval(pokeServer, timeout * 1000);
 </script>
 
 </body>
