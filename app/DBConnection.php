@@ -15,7 +15,7 @@ class DBConnection{
         return new PDO(env('DB_TYPE') . ':host=' . env('DB_HOST') . ';dbname=' . env('DB_NAME') . ';charset=' . env('DB_CHARSET'), env('DB_USERNAME'), env('DB_PASSWORD'), $options);
     }
 
-    function saveUploadToDatabase($url, $user, $description, $name){
+    function saveUploadToDatabase($url, $user, $name, $description){
         $now = date("Y-m-d H:i:s");
         $conn = $this->connect();
         $sql = "INSERT INTO `uploads` (`user`,`filename`, `name`, `description`, `created_at`) values(:email, :url, :name, :description, :created_at)";

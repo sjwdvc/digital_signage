@@ -26,23 +26,23 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
     ?>
     <section class="flex items-center h-screen justify-center flex-col">
         <h1 class="mb-5 text-6xl items-center Avenir xl:w-2/2 text-gray-900">First things first...</h1>
-        <a href="<?= env('httpProtocol').env('domain').env('subFolder').env('appFolder')?>/app/authentication.php" class="inline-block p-4 bg-purple-600 text-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-purple-600 ease-linear transition-all duration-150">
-<!--        <a href="app/authenticationLocal.php" class="inline-block p-4 bg-purple-600 text-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-purple-600 ease-linear transition-all duration-150">-->
+        <a href="<?= env('httpProtocol') . env('domain') . env('subFolder') . env('appFolder') ?>/app/authentication.php"
+           class="inline-block p-4 bg-purple-600 text-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-purple-600 ease-linear transition-all duration-150">
             Log in with your Da Vinci Account
         </a>
     </section>
 <?php } else { ?>
-    <?php
-    if($_SESSION['login']){
-        $_SESSION['login'] = null;
-    ?>
+<?php
+if ($_SESSION['login']){
+$_SESSION['login'] = null;
+?>
     <script>
         Swal.fire({
             icon: 'success',
             title: "You are logged in!",
         })
     </script>
-    <?php } ?>
+<?php } ?>
 
     <div>
         <div class="text-black">
@@ -53,19 +53,24 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
                             Showcase your work</h1>
                         <p class="mb-4 xl:w-3/4 text-gray-600 text-lg">Here you can upload a screenshot or image of your
                             work. Work in progress or a finished product!</p>
-                        <p class="mb-4 xl:w-3/4 text-gray-600 text-lg">Upload an image and optionally add a description.</p>
+                        <p class="mb-4 xl:w-3/4 text-gray-600 text-lg">Upload an image and optionally add a
+                            description.</p>
 
                         <label class="mb-2 text-left text-gray-500 w-3/4 md:w-full xl:w-3/4 xl:self-start md:self-center"
                                for="description">Description</label>
                         <textarea
                                 class="form-textarea resize-none p-1 mb-4 border w-3/4 md:w-full xl:w-3/4 xl:self-start md:self-center"
-                                id="description" placeholder="Type your description here..." name="description" maxlength="140" rows="3"></textarea>
+                                id="description" placeholder="Type your description here..." name="description"
+                                maxlength="140" rows="3"></textarea>
+                        <span class="text-sm text-red-500 font-bold" id="errorDescription"></span>
 
                         <div class="flex justify-center">
-                            <span class="inline-flex items-center px-5 py-3 mt-2 font-medium text-white transition duration-500 ease-in-out transform bg-transparent border rounded-lg bg-gray-900 hover:bg-gray-700 cursor-pointer" onclick="upload()">
+                            <span class="inline-flex items-center px-5 py-3 mt-2 font-medium text-white transition duration-500 ease-in-out transform bg-transparent border rounded-lg bg-gray-900 hover:bg-gray-700 cursor-pointer"
+                                  onclick="upload()">
                                 <span class="justify-center">Send it to the screen!</span>
                             </span>
-                            <a class="inline-flex items-center px-5 py-3 mt-2 font-medium text-white transition duration-500 ease-in-out transform bg-transparent border rounded-lg bg-gray-900 hover:bg-gray-700 cursor-pointer" href="app/authentication.php">
+                            <a class="inline-flex items-center px-5 py-3 mt-2 font-medium text-white transition duration-500 ease-in-out transform bg-transparent border rounded-lg bg-gray-900 hover:bg-gray-700 cursor-pointer"
+                               href="app/authentication.php">
                                 <span class="justify-center">Log in again</span>
                             </a>
                         </div>
@@ -88,59 +93,67 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
 
     <script>
         document.getElementById('file').addEventListener('change', changeFileInfo, true)
+        document.getElementById('description').addEventListener('change', emptyDescriptionError, true)
+
 
         // This function takes the values from the form, sends them to the server, and displays possible messages from the server
-        function upload(){
-            // This variable is defined at the top of the page
-            // This variable is the url for the Post request
-            var fetchUri = '<?php echo $fetchUrl ?>';
-            console.log(fetchUri);
-            var data = new FormData();
-            data.append('file', document.getElementById('file').files[0]);
-            data.append('description', document.getElementById('description').value);
+        function upload() {
+            var file = document.getElementById('file').files[0];
+            if(file) {
+                if (file.size < 500000) {
+                    // This variable is defined at the top of the page
+                    // This variable is the url for the Post request
+                    var fetchUri = '<?php echo $fetchUrl ?>';
+                    console.log(fetchUri);
+                    var data = new FormData();
+                    data.append('file', file);
+                    data.append('description', document.getElementById('description').value);
 
-            fetch(fetchUri, {
-                method: 'post',
-                body: data
-            }).then(function(response){
-                return response.json();
-            }).then((data) => {
-                console.log(data);
-                if(data.success){
-                    // clearFields(['qfFullNameError', 'qfEmailError', 'qfMessageError', 'qfCheckSError']);
-                    clearValues(['description']);
-                    resetFileInput('file');
-                    Swal.fire({
-                        icon: 'success',
-                        title: data.message,
-                        showConfirmButton: false,
-                        timer: 3000,
+                    fetch(fetchUri, {
+                        method: 'post',
+                        body: data
+                    }).then(function (response) {
+                        return response.json();
+                    }).then((data) => {
+                        console.log(data);
+                        if (data.success) {
+                            // clearFields(['qfFullNameError', 'qfEmailError', 'qfMessageError', 'qfCheckSError']);
+                            clearValues(['description']);
+                            resetFileInput('file');
+                            Swal.fire({
+                                icon: 'success',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 3000,
+                            });
+                            emptyFileInfo();
+                        } else if (!data.success && data.loginError) {
+                            swalAlert('warning', 'Sorry for the inconvenience', data.errors.login);
+                        } else if (!data.success && !data.loginError && data.errors.length === 0) {
+                            swalAlert('error', 'There seems to be something wrong... :(', data.message);
+                        } else {
+                            swalAlert('info', 'Forgot something?', data.errors.errorFile);
+                            showErrors(data.errors);
+                        }
+                    }).catch(function (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: "Something went wrong whilst submitting your form",
+                            text: error.message,
+                            footer: 'Contact the developer.'
+                        })
                     });
-                    emptyFileInfo();
+                } else {
+                    swalAlert('error', 'The file is too large... :(', 'The size of the file you selected is too big... Select a smaller image please.')
                 }
-                else if(!data.success && data.loginError){
-                    swalAlert('warning', 'Sorry for the inconvenience', data.errors.login);
-                }
-                else if(!data.success && !data.loginError && data.errors.length === 0){
-                    swalAlert('error', 'There seems to be something wrong... :(', data.message);
-                }
-                else{
-                    swalAlert('Info', 'Forgot something?', data.errors.errorFile);
-                    for(property in data.errors){
-                        document.getElementById(property).innerText = data.errors[property];
-                    }
-                }
-            }).catch(function (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: "Something went wrong whilst submitting your form",
-                    text: error.message,
-                    footer: 'Contact the developer.'
-                })
-            });
+            }
+            else{
+                swalAlert('info', 'Forgot something?', 'You need to select a file!');
+                showErrors({'errorFile': 'You need to select a file to upload.'});
+            }
         }
 
-        function swalAlert(icon, title, text){
+        function swalAlert(icon, title, text ='') {
             Swal.fire({
                 icon: icon,
                 title: title,
@@ -148,20 +161,33 @@ if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
             })
         }
 
-        function clearValues(toClear){
-            toClear.forEach(function(value, index){
+        function clearValues(toClear) {
+            toClear.forEach(function (value, index) {
                 document.getElementById(value).value = '';
             });
         }
-        function resetFileInput(name){
+
+        function resetFileInput(name) {
             document.getElementById(name).value = null;
         }
-        function changeFileInfo(){
+
+        function changeFileInfo() {
             document.getElementById('errorFile').innerText = '';
             document.getElementById('fileInfo').innerText = document.getElementById('file').files[0].name;
         }
-        function emptyFileInfo(){
+
+        function emptyFileInfo() {
             document.getElementById('fileInfo').innerText = '';
+        }
+
+        function emptyDescriptionError(){
+            document.getElementById('errorDescription').innerText = '';
+        }
+
+        function showErrors(errors){
+            for (property in errors) {
+                document.getElementById(property).innerText = errors[property];
+            }
         }
     </script>
 <?php } ?>
