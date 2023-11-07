@@ -1,8 +1,8 @@
 <?php
-require_once(__DIR__ . '/../vendor/autoload.php');
-require_once(__DIR__ . '/../env_loader.php');
+require_once('../../app/env_loader.php');
+require_once('../../app/vendor/autoload.php');
 
-use MyApp\DBConnection;
+use App\DBConnection;
 use WebSocket\Client;
 
 $dbConnection = new DBConnection();

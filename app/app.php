@@ -1,9 +1,9 @@
 <?php
 
-use Ratchet\Server\IoServer;
+use App\Socket;
 use Ratchet\Http\HttpServer;
+use Ratchet\Server\IoServer;
 use Ratchet\WebSocket\WsServer;
-use MyApp\Socket;
 
 require_once __DIR__ . '/vendor/autoload.php';
 

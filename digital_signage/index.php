@@ -1,5 +1,5 @@
 <?php
-require_once('env_loader.php');
+require_once('../app/env_loader.php');
 session_start();
 $fetchUrl = env('fetchUri');
 ?>
@@ -70,14 +70,14 @@ $_SESSION['login'] = null;
                                 <span class="justify-center">Send it to the screen!</span>
                             </span>
                             <a class="inline-flex items-center px-5 py-3 mt-2 font-medium text-white transition duration-500 ease-in-out transform bg-transparent border rounded-lg bg-gray-900 hover:bg-gray-700 cursor-pointer"
-                               href="app/authentication.php">
+                               href="pages/authentication.php">
                                 <span class="justify-center">Log in again</span>
                             </a>
                         </div>
                     </div>
 
                     <div class="md:mr-24 p-10 pb-28 md:ml-5 bg-contain bg-no-repeat"
-                         style="background-image:url('public/img/monitor.png');">
+                         style="background-image:url('img/monitor.png');">
                         <label class="w-64 flex flex-col items-center px-4 py-6 bg-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-purple-600 hover:text-white text-purple-600 ease-linear transition-all duration-150">
                             <i class="fas fa-cloud-upload-alt fa-3x"></i>
                             <span class="mt-2 text-base leading-normal">Select an image</span>

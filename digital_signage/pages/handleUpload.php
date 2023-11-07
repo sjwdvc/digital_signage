@@ -1,22 +1,25 @@
 <?php
-require_once(__DIR__.'/../env_loader.php');
-require_once(__DIR__.'/../vendor/autoload.php');
+require_once('../../app/env_loader.php');
+require_once('../../app/vendor/autoload.php');
 
-use MyApp\DBConnection;
+use App\DBConnection;
+
 session_start();
 $dbConnection = new DBConnection();
 
 if (!empty($_SESSION['user'])) {
     $response = validate($_POST, []);
+
     if($response['success']) {
         try {
             $target_dir = env('httpProtocol') . env('domain') . env('subFolder'). env('appFolder').env('uploadFolder');
             $imageFileType = strtolower(pathinfo($_FILES['file']['name'],PATHINFO_EXTENSION));
-            $newFileName = strtotime("now").str_replace(' ', '', $_SESSION['name']). '.' .$imageFileType;
+            $newFileName = strtotime("now") . str_replace(' ', '', $_SESSION['name']) . '.' .$imageFileType;
             $target_file = '../uploads/'. $newFileName;
 
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $check = finfo_file($finfo, $_FILES["file"]["tmp_name"]);
+
             if (in_array($check, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'])) {
                 // Check file size
                 if ($_FILES["file"]["size"] <= 500000) {

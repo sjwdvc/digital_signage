@@ -1,6 +1,6 @@
 <?php
-if(file_exists(__DIR__ .'/env.php')) {
-    include __DIR__ .'/env.php';
+if(file_exists(__DIR__ . '/env.php')) {
+    include __DIR__ . '/env.php';
     if(!function_exists('env')) {
         function env($key, $default = null)
         {

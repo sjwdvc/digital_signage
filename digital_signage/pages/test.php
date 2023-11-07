@@ -1,6 +1,8 @@
 <?php
 namespace MyApp;
-require_once(__DIR__.'/../vendor/autoload.php');
+use App\DBConnection;
+
+require_once('../../app/vendor/autoload.php');
 
 $dbConnection = new DBConnection();
 $toShow = null;

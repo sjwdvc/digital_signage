@@ -1,6 +1,6 @@
 <?php
-require_once('../vendor/autoload.php');
-require_once('../env_loader.php');
+require_once('../../app/env_loader.php');
+require_once('../../app/vendor/autoload.php');
 
 session_start();
 

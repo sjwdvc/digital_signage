@@ -1,5 +1,5 @@
 <?php
-require_once('../env_loader.php');
+require_once('../../app/env_loader.php');
 $pokeUri = env('pokeUri');
 $timeout = env('timeout');
 ?>
@@ -16,7 +16,7 @@ $timeout = env('timeout');
 <body>
     <section class="text-gray-600 body-font flex flex-col h-screen box-border py-8">
         <div class="flex justify-center max-h-full flex-grow">
-            <img id="submissionImage" class="max-h-full max-w-full object-contain mb-5" alt="Placeholder Image" src="../public/img/placeholder.jpg">
+            <img id="submissionImage" class="max-h-full max-w-full object-contain mb-5" alt="Placeholder Image" src="../img/placeholder.jpg">
         </div>
         <div class="max-w-7xl pt-2 mx-auto text-center">
             <h1 id="submissionName" class="text-3xl Avenir font-semibold text-gray-900"></h1>
@@ -33,7 +33,6 @@ $timeout = env('timeout');
     var httpProtocol = '<?php echo env("httpProtocol") ?>';
     var domain = '<?php echo env("domain") ?>';
     var subFolder = '<?php echo env("subFolder") ?>';
-    var appFolder = '<?php echo env("appFolder") ?>';
     var uploadUrl = '<?= env('uploadUrl') ?>';
     var uploadFolder = '<?= env('uploadFolder') ?>';
     var socket = new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
@@ -43,9 +42,10 @@ $timeout = env('timeout');
     setPlaceholder();
 
     socket.onmessage = function (e) {
+        console.log('something');
         let message = JSON.parse(e.data);
         if(message.foundNew){
-            submissionImage.src = httpProtocol + domain + subFolder + appFolder + uploadFolder + '/' + message.data.filename;
+            submissionImage.src = httpProtocol + domain + subFolder + uploadFolder + '/' + message.data.filename;
             submissionDescription.innerText = message.data.description;
             submissionName.innerText = message.data.name;
         }
@@ -54,7 +54,7 @@ $timeout = env('timeout');
         }
     }
     function setPlaceholder(){
-        submissionImage.src = httpProtocol + domain + subFolder + '/public/img/placeholder.jpg';
+        submissionImage.src = httpProtocol + domain + subFolder + '/img/placeholder.jpg';
         submissionName.innerHTML = `Upload your own submission through the url <span class="text-blue-500">${uploadUrl} </span>`;
         submissionDescription.innerText = "Try it! It's free! :-)";
     }

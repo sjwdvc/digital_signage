@@ -1,9 +1,9 @@
 <?php
-namespace MyApp;
+namespace App;
 //require_once(__DIR__.'/../vendor/autoload.php');
 
-use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use Ratchet\MessageComponentInterface;
 
 class Socket implements MessageComponentInterface {
 
