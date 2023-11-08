@@ -5,7 +5,7 @@
     }
   },
   "require": {
-    "cboden/ratchet": "^0.4",
+    "cboden/ratchet": "^0.4.4",
     "stevenmaguire/oauth2-microsoft": "^2.2",
     "ext-json": "*",
     "ext-fileinfo": "*",
