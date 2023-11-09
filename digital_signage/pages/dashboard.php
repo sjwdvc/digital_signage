@@ -28,7 +28,7 @@ $timeout = env('timeout');
 
     <div class="pr-2">
         <p class="text-right">
-            Upload your own submission through the url <span id="uploadUrlLink" class="text-blue-500"> </span>
+            Upload your own submission through the url <a id="uploadUrlLink" target="_blank" class="text-blue-500 href=""> </a>
         </p>
         <p class="text-right text-xs text-gray-500 pb-2">
             Made by <a class="underline text-blue-500" target="_blank" href="https://github.com/hectickaluha">Stefano Verhoeve</a> - SJW - 2023
@@ -81,7 +81,7 @@ $timeout = env('timeout');
         submissionName.innerHTML = `Upload your own submission through the url <span class="text-blue-500">${uploadUrl} </span>`;
         submissionDescription.innerText = "Try it! It's free! :-)";
         uploadUrlLink.innerText = uploadUrl;
-
+        uploadUrlLink.href = uploadUrl;
 
     }
 
