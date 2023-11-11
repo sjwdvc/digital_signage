@@ -19,9 +19,14 @@ $fetchUrl = env('fetchUri');
 </head>
 <body>
 <?php
-$_SESSION['user'] = 'sverhoeve@davinci.nl;';
-$_SESSION['name'] = 'Stefano';
-$_SESSION['login'] = true;
+if(empty($tenantId)){
+    $names = ['Pieter Jan', 'Klaas Vaak', 'Alexandro Verrebrug', 'Sinclair Ewo', 'Alessandra Visser'];
+    $randomKey = array_rand($names);
+
+    $_SESSION['user'] = str_replace(' ', '', $names[$randomKey]).'@mydavinci.nl';
+    $_SESSION['name'] = $names[$randomKey];
+    $_SESSION['login'] = true;
+}
 
 if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
     ?>
