@@ -2,6 +2,7 @@
 require_once('../../app/env_loader.php');
 $pokeUri = env('pokeUri');
 $timeout = env('timeout');
+$retryTimout = env('retryTimout');
 ?>
 <!doctype html>
 <html lang="en">
@@ -10,7 +11,6 @@ $timeout = env('timeout');
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<!--    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">-->
     <link href="../css/tw.min.css" rel="stylesheet">
     <title>Highlights</title>
 </head>
@@ -36,16 +36,6 @@ $timeout = env('timeout');
     </div>
 </section>
 
-
-<!--    <section class="text-gray-600 body-font flex flex-col h-screen max-h-screen box-border py-8">-->
-<!--        <div class="flex flex-col flex-auto justify-center items-center mb-5">-->
-<!--            <img id="submissionImage" class="object-contain h-full w-auto" alt="One of the images that was uploaded" src="../img/placeholder.jpg">-->
-<!--        </div>-->
-<!--        <div class="flex flex-col flex-none max-w-7xl pt-2 mx-auto text-center">-->
-<!--            <h1 id="submissionName" class="text-3xl Avenir font-semibold text-gray-900"></h1>-->
-<!--            <h2 id="submissionDescription" class="mb-8 text-1xl Avenir font-semibold text-gray-600 text-center">Description here</h2>-->
-<!--        </div>-->
-<!--    </section>-->
 <script>
 
     var submissionName = document.getElementById('submissionName');
@@ -62,6 +52,7 @@ $timeout = env('timeout');
     var socket;
 
     var timeout = <?php echo $timeout ?>;
+    var retryTimout = <?php echo $retryTimout ?>;
 
     setPlaceholder();
     checkWsOrConnect();
@@ -87,13 +78,15 @@ $timeout = env('timeout');
         fetch(pokeUri, {
             method: 'post',
             body: data
+        }).catch(()=>{
+
         });
     }
 
     function checkWsOrConnect(){
         if(socket == null || socket.readyState !== WebSocket.OPEN){
             socket = null;
-            socket = new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
+            socket = new WebSocket('<?php echo env("wsProtocol")?>://<?php echo env("domain") ?>/wss');
             socket.onmessage = function (e) {
                 let message = JSON.parse(e.data);
                 if (message.foundNew) {
@@ -108,7 +101,7 @@ $timeout = env('timeout');
     }
 
     setInterval(pokeServer, timeout * 1000);
-    setInterval(checkWsOrConnect, 300000)
+    setInterval(checkWsOrConnect, retryTimout * 1000)
 </script>
 
 </body>
