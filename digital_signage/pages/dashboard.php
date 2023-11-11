@@ -104,9 +104,7 @@ $timeout = env('timeout');
                     setPlaceholder();
                 }
             }
-            console.log('reconnected ws');
         }
-        console.log('checked ws');
     }
 
     setInterval(pokeServer, timeout * 1000);
