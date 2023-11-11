@@ -59,22 +59,12 @@ $timeout = env('timeout');
     var subFolder = '<?php echo env("subFolder") ?>';
     var uploadUrl = '<?= env('uploadUrl') ?>';
     var uploadFolder = '<?= env('uploadFolder') ?>';
-    var socket = new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
+    var socket;
 
     var timeout = <?php echo $timeout ?>;
 
     setPlaceholder();
-
-    socket.onmessage = function (e) {
-        let message = JSON.parse(e.data);
-        if (message.foundNew) {
-            submissionImage.src = httpProtocol + domain + subFolder + uploadFolder + '/' + message.data.filename;
-            submissionDescription.innerText = message.data.description;
-            submissionName.innerText = message.data.name;
-        } else {
-            setPlaceholder();
-        }
-    }
+    checkWsOrConnect();
 
     function setPlaceholder() {
         submissionImage.src = httpProtocol + domain + subFolder + '/img/placeholder.jpg';
@@ -100,7 +90,27 @@ $timeout = env('timeout');
         });
     }
 
+    function checkWsOrConnect(){
+        if(socket == null || socket.readyState !== WebSocket.OPEN){
+            socket = null;
+            socket = new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
+            socket.onmessage = function (e) {
+                let message = JSON.parse(e.data);
+                if (message.foundNew) {
+                    submissionImage.src = httpProtocol + domain + subFolder + uploadFolder + '/' + message.data.filename;
+                    submissionDescription.innerText = message.data.description;
+                    submissionName.innerText = message.data.name;
+                } else {
+                    setPlaceholder();
+                }
+            }
+            console.log('reconnected ws');
+        }
+        console.log('checked ws');
+    }
+
     setInterval(pokeServer, timeout * 1000);
+    setInterval(checkWsOrConnect, 300000)
 </script>
 
 </body>
