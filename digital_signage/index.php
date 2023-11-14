@@ -2,6 +2,7 @@
 require_once('../app/env_loader.php');
 session_start();
 $fetchUrl = env('fetchUri');
+$tenantId = env('tenant');
 ?>
 
 <!doctype html>
@@ -31,7 +32,7 @@ if(empty($tenantId)){
 if (empty($_SESSION['user']) || $_SESSION['user'] == null) {
     ?>
     <section class="flex items-center h-screen justify-center flex-col">
-        <h1 class="mb-5 text-6xl items-center Avenir xl:w-2/2 text-gray-900">First things first...</h1>
+        <h1 class="mb-5 text-6xl items-center Avenir xl:w-2/2 text-gray-900 text-center">First things first...</h1>
         <a href="<?= env('httpProtocol') . env('domain') . env('subFolder') . env('pagesFolder') ?>/authentication.php"
            class="inline-block p-4 bg-purple-600 text-white rounded-md shadow-md tracking-wide uppercase border border-blue cursor-pointer hover:bg-white hover:text-purple-600 ease-linear transition-all duration-150">
             Log in with your Da Vinci Account
