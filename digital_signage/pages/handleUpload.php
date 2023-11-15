@@ -22,7 +22,7 @@ if (!empty($_SESSION['user'])) {
 
             if (in_array($check, ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'])) {
                 // Check file size
-                if ($_FILES["file"]["size"] <= 500000) {
+                if ($_FILES["file"]["size"] <= 3000000) {
 //                    // if everything is ok, try to upload file
                     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
                         $dbConnection->saveUploadToDatabase($newFileName, $_SESSION['user'], $_SESSION['name'], empty($response['data']['description']) ? null : $response['data']['description']);

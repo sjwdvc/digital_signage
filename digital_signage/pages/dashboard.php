@@ -20,9 +20,9 @@ $retryTimout = env('retryTimout');
         <img id="submissionImage" alt="One of the images that was uploaded" src="../img/placeholder.jpg"
              class="object-contain h-full w-full">
     </div>
-    <div class="flex flex-col flex-none max-w-7xl pt-2 mx-auto text-center">
+    <div class="flex flex-col flex-none w-full max-w-7xl mx-auto text-center max-h-40 truncate whitespace-normal p-2">
         <h1 id="submissionName" class="text-3xl Avenir font-semibold text-gray-900"></h1>
-        <h2 id="submissionDescription" class="mb-8 text-1xl Avenir font-semibold text-gray-600 text-center">Description
+        <h2 id="submissionDescription" class="mb-8 text-1xl Avenir font-semibold text-gray-600 text-center max-w-full break-words">Description
             here</h2>
     </div>
 
