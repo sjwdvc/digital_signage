@@ -49,7 +49,7 @@ if (!empty($_SESSION['user'])) {
                         'loginError' => false,
                         'errors' => [],
                         'data' => [],
-                        'message' => "Sorry... Your file was too large in size (max 500000kb) ¯\_(ツ)_/¯"
+                        'message' => "Sorry... Your file was too large in size (max 3MB) ¯\_(ツ)_/¯"
                     ];
                 }
             } else {

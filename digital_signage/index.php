@@ -111,7 +111,7 @@ $_SESSION['login'] = null;
         function upload() {
             var file = document.getElementById('file').files[0];
             if (file) {
-                if (file.size < 500000) {
+                if (file.size < 30000000) {
                     // This variable is defined at the top of the page
                     // This variable is the url for the Post request
                     var fetchUri = '<?php echo $fetchUrl ?>';
