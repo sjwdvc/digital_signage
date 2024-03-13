@@ -86,7 +86,8 @@ $retryTimout = env('retryTimout');
     function checkWsOrConnect(){
         if(socket == null || socket.readyState !== WebSocket.OPEN){
             socket = null;
-            socket = new WebSocket('<?php echo env("wsProtocol")?>://<?php echo env("domain") ?>/wss');
+            socket = new WebSocket('<?php echo env("wsProtocol")?>://<?php echo env("domain") ?><?php echo env("wssInUrlOrThroughPort") ?>');
+            new WebSocket('ws://<?php echo env("domain") ?>:<?php echo env("wsPort") ?>');
             socket.onmessage = function (e) {
                 let message = JSON.parse(e.data);
                 if (message.foundNew) {
